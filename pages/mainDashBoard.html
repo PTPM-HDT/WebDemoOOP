@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Let's Code | Next-Gen Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <link rel="stylesheet" href="../css/DashBoardStyle.css">
+</head>
+
+<body class="d-flex flex-column">
+
+  <nav class="navbar fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-grid-fill brand-gradient"></i>
+        LetsCode <span class="fw-light ms-2 text-white-50 fs-6 mt-1">Admin Dashboard</span>
+      </a>
+
+      <div class="ms-auto">
+        <a href="../index.html" class="btn btn-logout d-flex align-items-center">
+          <span class="me-2">Log Out</span>
+          <i class="bi bi-box-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5 flex-grow-1">
+
+    <header class="d-flex justify-content-between align-items-end mb-5 page-header">
+      <div>
+        <span class="text-uppercase fw-bold text-white-50" style="font-size: 0.75rem; letter-spacing: 1.5px;">Xin chào,
+          Admin</span>
+        <h2 class="mb-0 mt-1">Dashboard</h2>
+      </div>
+      <div class="d-none d-md-block">
+        <div class="date-pill">
+          <i class="bi bi-calendar4-event me-2 text-white"></i>
+          <span id="currentDate">loading...</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="row g-4">
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card-glass">
+          <div class="card-icon-wrapper">
+            <i class="bi bi-mortarboard"></i>
+          </div>
+          <h3 class="card-title">Thông tin giáo viên</h3>
+          <p class="card-desc">Quản lý hồ sơ giảng dạy, hợp đồng và thông tin giáo viên.</p>
+          <div class="card-action"><i class="bi bi-arrow-right-circle-fill"></i></div>
+          <a href="./Danh.html" class="stretched-link"></a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card-glass">
+          <div class="card-icon-wrapper">
+            <i class="bi bi-people"></i>
+          </div>
+          <h3 class="card-title">Thông tin học viên</h3>
+          <p class="card-desc">Hồ sơ nhập học, theo dõi điểm số và quá trình đào tạo.</p>
+          <div class="card-action"><i class="bi bi-arrow-right-circle-fill"></i></div>
+          <a href="./Danh.html" class="stretched-link"></a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card-glass">
+          <div class="card-icon-wrapper">
+            <i class="bi bi-bar-chart"></i>
+          </div>
+          <h3 class="card-title">Báo cáo tình hình</h3>
+          <p class="card-desc">Phân tích kết quả và thông báo cho phụ huynh.</p>
+          <div class="card-action"><i class="bi bi-arrow-right-circle-fill"></i></div>
+          <a href="./Binh.html" class="stretched-link"></a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card-glass">
+          <div class="card-icon-wrapper">
+            <i class="bi bi-box-seam"></i>
+          </div>
+          <h3 class="card-title">Quản lý tài nguyên lớp học</h3>
+          <p class="card-desc">Quản lý media, phòng học và thiết bị.</p>
+          <div class="card-action"><i class="bi bi-arrow-right-circle-fill"></i></div>
+          <a href="./Linh.html" class="stretched-link"></a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card-glass">
+          <div class="card-icon-wrapper">
+            <i class="bi bi-diagram-3"></i>
+          </div>
+          <h3 class="card-title">Phân lớp</h3>
+          <p class="card-desc">Công cụ xếp lớp thông minh và phân công chủ nhiệm.</p>
+          <div class="card-action"><i class="bi bi-arrow-right-circle-fill"></i></div>
+          <a href="./Hao.html" class="stretched-link"></a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card-glass">
+          <div class="card-icon-wrapper">
+            <i class="bi bi-calendar-check"></i>
+          </div>
+          <h3 class="card-title">Xếp thời khoá biểu</h3>
+          <p class="card-desc">Xếp thời khóa biểu và quản lý sự kiện.</p>
+          <div class="card-action"><i class="bi bi-arrow-right-circle-fill"></i></div>
+          <a href="./Duc.html" class="stretched-link"></a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="text-center">
+    <div class="container">
+      <p class="mb-0 opacity-50">Copyright © 2025</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+
+</html>

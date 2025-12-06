@@ -1,0 +1,228 @@
+
+:root {
+  --bg-dark: #030712;
+
+  --accent-gradient: linear-gradient(45deg, #ff4b2b, #ff416c);
+  --icon-gradient: linear-gradient(45deg, #ff416c, #ff4b2b);
+
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
+
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+}
+
+body {
+  background-color: var(--bg-dark);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  padding-top: 80px;
+}
+
+body::before,
+body::after {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: -1;
+  opacity: 0.4;
+  animation: float 10s infinite ease-in-out;
+}
+
+body::before {
+  background: #4f46e5;
+  top: -100px;
+  left: -100px;
+}
+
+body::after {
+  background: #ec4899;
+  bottom: -100px;
+  right: -100px;
+  animation-delay: -5s;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(50px, 50px);
+  }
+}
+
+.navbar {
+  background: rgba(3, 7, 18, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: var(--glass-border);
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.5px;
+  color: white !important;
+  display: flex;
+  align-items: center;
+}
+
+.brand-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-right: 8px;
+}
+
+.btn-logout {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  color: var(--text-secondary);
+  border-radius: 50px;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.page-header h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.date-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.card-glass {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: 24px;
+  padding: 2rem;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+
+.card-glass:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+.card-glass::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.card-glass:hover::before {
+  opacity: 1;
+}
+
+.card-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: white;
+  transition: all 0.4s ease;
+}
+
+.card-glass:hover .card-icon-wrapper {
+  background: var(--icon-gradient);
+  border-color: transparent;
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+}
+
+.card-title {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-desc {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.card-action {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.card-glass:hover .card-action {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.stretched-link::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  content: "";
+}
+
+footer {
+  margin-top: auto;
+  border-top: var(--glass-border);
+  padding: 2rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
