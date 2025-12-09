@@ -1,9 +1,53 @@
 const mockData = {
-      "10A1": [{ id: "HS101", name: "Nguyễn Thế Anh", oldScore: 9.0, newScore: 9.5 }, { id: "HS102", name: "Trần Minh Quang", oldScore: 8.8, newScore: 9.0 }, { id: "HS103", name: "Lê Thu Thảo", oldScore: 9.2, newScore: 9.2 }, { id: "HS104", name: "Phạm Hồng Ngọc", oldScore: 9.5, newScore: 9.8 }, { id: "HS105", name: "Đinh Văn Lâm", oldScore: 8.5, newScore: 8.0 }, { id: "HS106", name: "Vũ Mai Phương", oldScore: 8.0, newScore: 8.5 }],
-      "10A2": [{ id: "HS201", name: "Vũ Tuấn Kiệt", oldScore: 6.5, newScore: 7.5 }, { id: "HS202", name: "Hoàng Văn Thái", oldScore: 7.0, newScore: 6.5 }, { id: "HS203", name: "Ngô Lan Anh", oldScore: 5.5, newScore: 5.5 }, { id: "HS204", name: "Bùi Thị Mai", oldScore: 6.0, newScore: 8.0 }, { id: "HS205", name: "Đặng Hùng Dũng", oldScore: 4.0, newScore: 3.5 }],
-      "11B1": [{ id: "HS301", name: "Nguyễn Thị Mơ", oldScore: 8.0, newScore: 8.5 }, { id: "HS302", name: "Trần Bảo Ngọc", oldScore: 7.5, newScore: 7.2 }, { id: "HS303", name: "Lý Văn Sâm", oldScore: 6.0, newScore: 6.8 }],
-      "12C1": [{ id: "HS401", name: "Phan Văn Đức", oldScore: 8.0, newScore: 7.0 }, { id: "HS402", name: "Trương Thị Hằng", oldScore: 7.5, newScore: 6.5 }],
-      "JAVA_BASIC": [{ id: "JV001", name: "Trần Văn Code", oldScore: 5.0, newScore: 8.0 }, { id: "JV002", name: "Nguyễn Thị Bug", oldScore: 7.0, newScore: 6.5 }]
+      "PYA13": [
+  { "id": "HS3010", "name": "Nguyễn Hải Nam", "oldScore": 7.5, "newScore": 8.0 },
+  { "id": "HS3011", "name": "Phạm Thu Trang", "oldScore": 8.0, "newScore": 8.2 },
+  { "id": "HS3012", "name": "Trần Đức Long", "oldScore": 6.8, "newScore": 7.5 },
+  { "id": "HS3013", "name": "Lê Minh Huy", "oldScore": 9.0, "newScore": 9.1 },
+  { "id": "HS3014", "name": "Đỗ Khánh Chi", "oldScore": 7.2, "newScore": 7.0 }
+  ],
+
+  "REA20": [
+  { "id": "HS4010", "name": "Vũ Thị Huyền", "oldScore": 8.5, "newScore": 9.0 },
+  { "id": "HS4011", "name": "Ngô Văn Bình", "oldScore": 7.0, "newScore": 7.8 },
+  { "id": "HS4012", "name": "Đặng Bảo Ngọc", "oldScore": 8.2, "newScore": 8.2 },
+  { "id": "HS4013", "name": "Bùi Thành Công", "oldScore": 6.5, "newScore": 6.0 },
+  { "id": "HS4014", "name": "Phan Gia Hân", "oldScore": 7.8, "newScore": 8.4 }
+  ],
+
+  "PYB10": [
+  { "id": "HS5020", "name": "Lương Thế Vinh", "oldScore": 9.2, "newScore": 9.4 },
+  { "id": "HS5021", "name": "Hoàng Mỹ Linh", "oldScore": 7.5, "newScore": 7.8 },
+  { "id": "HS5022", "name": "Trương Khánh Phúc", "oldScore": 6.0, "newScore": 6.5 },
+  { "id": "HS5023", "name": "Đinh Ngọc Ánh", "oldScore": 8.0, "newScore": 8.5 }
+  ],
+
+  "SAI12TT": [
+  { "id": "HS5030", "name": "Trần Tiến Mạnh", "oldScore": 8.5, "newScore": 8.8 },
+  { "id": "HS5031", "name": "Nguyễn Diễm My", "oldScore": 7.8, "newScore": 7.6 },
+  { "id": "HS5032", "name": "Phạm Quốc Toàn", "oldScore": 5.5, "newScore": 6.0 },
+  { "id": "HS5033", "name": "Võ Hoài Nam", "oldScore": 6.2, "newScore": 7.0 }
+  ],
+
+  "NC28": [
+  { "id": "HS6020", "name": "Vũ Văn Toản", "oldScore": 7.0, "newScore": 7.5 },
+  { "id": "HS6021", "name": "Đặng Phương Thảo", "oldScore": 8.2, "newScore": 8.0 },
+  { "id": "HS6022", "name": "Nguyễn Thành Ý", "oldScore": 6.8, "newScore": 7.2 }
+  ],
+
+  "SCB01": [
+  { "id": "HS6030", "name": "Bùi Hữu Nghĩa", "oldScore": 8.5, "newScore": 9.0 },
+  { "id": "HS6031", "name": "Trần Thu Huyền", "oldScore": 7.5, "newScore": 7.8 },
+  { "id": "HS6032", "name": "Phan Tấn Tài", "oldScore": 5.8, "newScore": 6.0 }
+  ],
+
+  "PYC9": [
+  { "id": "PY001", "name": "Trần Thanh Python", "oldScore": 5.0, "newScore": 7.0 },
+  { "id": "PY002", "name": "Nguyễn Hà Code", "oldScore": 7.5, "newScore": 8.0 },
+  { "id": "PY003", "name": "Vũ Debugger", "oldScore": 6.8, "newScore": 7.8 }
+  ]
+
+
     };
 
     let currentHonoredList = [];
@@ -29,7 +73,7 @@ const mockData = {
       new bootstrap.Toast(toastEl, { delay: 3000 }).show();
     }
 
-    // --- NEW: Helper function tạo HTML cho chỉ số tăng/giảm ---
+    // ---Helper function tạo HTML cho chỉ số tăng/giảm ---
     function getTrendHTML(diff) {
       if (diff > 0) return `<span class="fw-bold text-success"><i class="fas fa-arrow-up me-1"></i>+${diff}</span>`;
       if (diff < 0) return `<span class="fw-bold text-danger"><i class="fas fa-arrow-down me-1"></i>${diff}</span>`;
@@ -110,7 +154,6 @@ const mockData = {
       if (list.length === 0) tbody.innerHTML = '<tr><td colspan="3" class="text-center text-success">Không có cảnh báo!</td></tr>';
     }
 
-    // Logic cũ (Add/Update/Show Modal) giữ nguyên
     function addToBestOfMonth(id, name, className, score) {
       currentHonoredList.push({ id, name, className, score });
       generateReport(); // Re-render để cập nhật nút
