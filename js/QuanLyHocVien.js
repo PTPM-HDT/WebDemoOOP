@@ -1,6 +1,7 @@
 const DB_KEY = 'LETSCODE_DB';
 let db = null;
 let deleteTarget = null;
+let tempStudentData = null; // Biến tạm để lưu dữ liệu chờ xác nhận
 
 // CẤU HÌNH PHÂN TRANG
 const ITEMS_PER_PAGE = 10;
@@ -9,10 +10,7 @@ let currentFilteredData = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     loadDB();
-    updateTable(); // Thay cho renderTable
-    
-    document.getElementById('searchKeyword').addEventListener('input', () => { currentPage = 1; updateTable(); });
-    document.getElementById('filterClass').addEventListener('change', () => { currentPage = 1; updateTable(); });
+    performSearch(); // Load lần đầu
 });
 
 function loadDB() {
@@ -51,33 +49,43 @@ function getAllStudents() {
     let all = [];
     if (db.unassignedStudents) {
         db.unassignedStudents.forEach(s => {
-            all.push({ ...s, className: "Chưa phân lớp", classId: null, type: 'UNASSIGNED' });
+            all.push({ ...s, className: "Chưa phân lớp", classId: null, type: 'UNASSIGNED', courseName: "Chưa đăng ký" });
         });
     }
     if (db.classes) {
         db.classes.forEach(cls => {
+            // Trích xuất tên khóa học từ tên lớp (Ví dụ: "Lập trình Python A1" -> "Lập trình Python")
+            // Ở đây dùng logic đơn giản: Lấy phần text trước chữ số cuối cùng hoặc dùng tên lớp làm tên khóa
+            let cName = cls.name.split(' K')[0]; // Giả sử tên lớp có format "Tên Khóa Kxx"
+            if(cName.length === cls.name.length) cName = cls.name; // Fallback
+
             cls.students.forEach(s => {
-                all.push({ ...s, className: cls.name, classId: cls.id, type: 'ASSIGNED' });
+                all.push({ ...s, className: cls.name, classId: cls.id, type: 'ASSIGNED', courseName: cName });
             });
         });
     }
     return all;
 }
 
-// --- LOGIC PHÂN TRANG & RENDER ---
+// --- TÌM KIẾM & PHÂN TRANG ---
+function performSearch() {
+    currentPage = 1; // Reset về trang 1 khi tìm kiếm
+    updateTable();
+}
+
 function updateTable() {
-    const keyword = document.getElementById('searchKeyword').value.toLowerCase();
-    const filter = document.getElementById('filterClass').value;
+    const nameKw = document.getElementById('searchName').value.toLowerCase();
+    const idKw = document.getElementById('searchID').value.toLowerCase();
+    const classIdKw = document.getElementById('searchClassID').value.toLowerCase();
+    
     let students = getAllStudents();
 
     currentFilteredData = students.filter(s => {
-        const matchName = (s.name || '').toLowerCase().includes(keyword) || 
-                          (s.id || '').toLowerCase().includes(keyword) ||
-                          (s.phone || '').includes(keyword);
-        let matchFilter = true;
-        if (filter === 'ASSIGNED') matchFilter = s.type === 'ASSIGNED';
-        if (filter === 'UNASSIGNED') matchFilter = s.type === 'UNASSIGNED';
-        return matchName && matchFilter;
+        const matchName = !nameKw || (s.name || '').toLowerCase().includes(nameKw);
+        const matchID = !idKw || (s.id || '').toLowerCase().includes(idKw);
+        const matchClass = !classIdKw || (s.classId || '').toLowerCase().includes(classIdKw);
+        
+        return matchName && matchID && matchClass;
     });
 
     const totalPages = Math.ceil(currentFilteredData.length / ITEMS_PER_PAGE);
@@ -102,16 +110,11 @@ function renderTableRows(data) {
         data.forEach(s => {
             const classBadge = s.type === 'UNASSIGNED' 
                 ? `<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Chưa phân lớp</span>`
-                : `<span class="badge bg-primary-subtle text-primary border border-primary-subtle">${s.className}</span>`;
+                : `<span class="badge bg-primary-subtle text-primary border border-primary-subtle">${s.className}</span><div class="small text-white-50 mt-1">Mã: ${s.classId}</div>`;
 
             const avatarImg = s.avatar 
                 ? `<img src="${s.avatar}" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">`
                 : `<div class="d-inline-block rounded-circle bg-secondary text-center text-white me-2" style="width: 40px; height: 40px; line-height: 40px;"><i class="bi bi-person"></i></div>`;
-
-            let contactInfo = '';
-            if(s.phone) contactInfo += `<div><i class="bi bi-telephone me-1 text-success"></i>${s.phone}</div>`;
-            if(s.email) contactInfo += `<div class="small text-white-50"><i class="bi bi-envelope me-1"></i>${s.email}</div>`;
-            if(!contactInfo) contactInfo = '<span class="text-white-50 small">--</span>';
 
             const dobDisplay = (s.dob && s.dob.includes('-')) ? s.dob.split('-').reverse().join('/') : '--/--/----';
 
@@ -128,7 +131,7 @@ function renderTableRows(data) {
                     </div>
                 </td>
                 <td>${dobDisplay}</td>
-                <td>${contactInfo}</td>
+                <td><span class="text-info fw-bold">${s.courseName}</span></td>
                 <td>${classBadge}</td>
                 <td>
                     <button class="btn btn-sm btn-icon btn-outline-info" onclick="editStudent('${s.id}', '${s.type}', '${s.classId || ''}')" title="Sửa">
@@ -160,12 +163,14 @@ function renderPagination(totalPages) {
 
 function changePage(page) {
     currentPage = page;
-    updateTable();
+    updateTable(); // Dùng hàm updateTable mới thay vì gọi trực tiếp filter
 }
 
 function openStudentModal() {
     document.getElementById('modalTitle').innerText = "Thêm Học Viên Mới";
     document.getElementById('editMode').value = "false";
+    
+    // Reset form
     document.getElementById('inputID').value = "";
     document.getElementById('inputID').disabled = false;
     document.getElementById('inputName').value = "";
@@ -177,6 +182,7 @@ function openStudentModal() {
     document.getElementById('inputFileAvatar').value = "";
     document.getElementById('hiddenAvatarBase64').value = "";
     document.getElementById('previewAvatar').src = "https://via.placeholder.com/60?text=HV";
+    
     document.getElementById('inputDateAdded').value = new Date().toISOString().split('T')[0];
     new bootstrap.Modal(document.getElementById('studentFormModal')).show();
 }
@@ -202,6 +208,7 @@ function editStudent(id, type, classId) {
         document.getElementById('inputEmail').value = student.email || "";
         document.getElementById('inputAddress').value = student.address || "";
         document.getElementById('inputDateAdded').value = student.dateAdded || "";
+        
         document.getElementById('inputFileAvatar').value = ""; 
         if (student.avatar) {
             document.getElementById('previewAvatar').src = student.avatar;
@@ -215,12 +222,23 @@ function editStudent(id, type, classId) {
     new bootstrap.Modal(document.getElementById('studentFormModal')).show();
 }
 
-function saveStudent() {
-    const isEdit = document.getElementById('editMode').value === "true";
+// --- BƯỚC 1: CHUẨN BỊ LƯU (HIỆN MODAL XÁC NHẬN) ---
+function preSaveStudent() {
     const id = document.getElementById('inputID').value.trim();
     const name = document.getElementById('inputName').value.trim();
-    
-    const newData = {
+    const isEdit = document.getElementById('editMode').value === "true";
+
+    if (!id || !name) { showToast("Lỗi", "Vui lòng nhập Mã và Tên học viên.", "error"); return; }
+
+    // Check trùng ID nếu là thêm mới
+    if (!isEdit) {
+        const all = getAllStudents();
+        if (all.some(s => s.id === id)) { showToast("Lỗi", "Mã học viên đã tồn tại!", "error"); return; }
+    }
+
+    // Lưu tạm dữ liệu vào biến toàn cục
+    tempStudentData = {
+        id: id,
         name: name,
         dob: document.getElementById('inputDob').value,
         gender: document.getElementById('inputGender').value,
@@ -231,31 +249,59 @@ function saveStudent() {
         avatar: document.getElementById('hiddenAvatarBase64').value
     };
 
-    if (!id || !name) { showToast("Lỗi", "Vui lòng nhập Mã và Tên học viên.", "error"); return; }
+    // Điền thông tin vào bảng xác nhận
+    const ul = document.getElementById('confirmList');
+    ul.innerHTML = `
+        <li class="list-group-item bg-transparent text-white border-secondary"><strong>Mã HV:</strong> ${tempStudentData.id}</li>
+        <li class="list-group-item bg-transparent text-white border-secondary"><strong>Họ tên:</strong> ${tempStudentData.name}</li>
+        <li class="list-group-item bg-transparent text-white border-secondary"><strong>Ngày sinh:</strong> ${tempStudentData.dob || 'Chưa nhập'}</li>
+        <li class="list-group-item bg-transparent text-white border-secondary"><strong>SĐT:</strong> ${tempStudentData.phone || 'Chưa nhập'}</li>
+        <li class="list-group-item bg-transparent text-white border-secondary"><strong>Email:</strong> ${tempStudentData.email || 'Chưa nhập'}</li>
+    `;
+
+    // Ẩn modal nhập, hiện modal xác nhận
+    bootstrap.Modal.getInstance(document.getElementById('studentFormModal')).hide();
+    new bootstrap.Modal(document.getElementById('confirmSaveModal')).show();
+}
+
+// --- BƯỚC 2: THỰC THI LƯU (SAU KHI XÁC NHẬN) ---
+function executeSaveStudent() {
+    if (!tempStudentData) return;
+
+    const isEdit = document.getElementById('editMode').value === "true";
 
     if (isEdit) {
-        const origin = JSON.parse(document.getElementById('originClass').value);
+        const originString = document.getElementById('originClass').value;
+        const origin = originString ? JSON.parse(originString) : null;
         let studentRef = null;
-        if (origin.type === 'UNASSIGNED') studentRef = db.unassignedStudents.find(s => s.id === id);
-        else {
+
+        if (origin && origin.type === 'UNASSIGNED') studentRef = db.unassignedStudents.find(s => s.id === tempStudentData.id);
+        else if (origin) {
             const cls = db.classes.find(c => c.id === origin.classId);
-            if(cls) studentRef = cls.students.find(s => s.id === id);
+            if(cls) studentRef = cls.students.find(s => s.id === tempStudentData.id);
         }
+
         if(studentRef) {
-            Object.assign(studentRef, newData);
+            Object.assign(studentRef, tempStudentData); // Update data
             saveDB();
             showToast("Thành công", "Đã cập nhật thông tin chi tiết.");
         }
     } else {
-        const all = getAllStudents();
-        if (all.some(s => s.id === id)) { showToast("Lỗi", "Mã học viên đã tồn tại!", "error"); return; }
-        db.unassignedStudents.push({ id, ...newData });
+        db.unassignedStudents.push(tempStudentData);
         saveDB();
         showToast("Thành công", "Đã thêm học viên vào danh sách chờ.");
     }
-    bootstrap.Modal.getInstance(document.getElementById('studentFormModal')).hide();
+
+    // Reset và đóng modal
+    tempStudentData = null;
+    bootstrap.Modal.getInstance(document.getElementById('confirmSaveModal')).hide();
     updateTable();
 }
+
+// Khi bấm "Quay lại sửa" ở modal xác nhận
+document.querySelector('#confirmSaveModal .btn-glass-secondary').addEventListener('click', () => {
+    new bootstrap.Modal(document.getElementById('studentFormModal')).show();
+});
 
 function requestDelete(id, type, classId) {
     deleteTarget = { id, type, classId };
