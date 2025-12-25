@@ -1,15 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="../css/QuanLyGiaoVien.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Giáo Viên - LetsCode</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/PhanLop.css">
 </head>
-
 <body>
-  <h1>Quản lý giáo viên</h1>
-</body>
+    <div class="bg-fixed-wrapper">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
 
+    <nav class="navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-person-badge-fill brand-gradient"></i>
+                LetsCode <span class="fw-light ms-2 text-white-50 fs-6 mt-1">Quản lý Giáo viên</span>
+            </a>
+            <div class="ms-auto d-flex gap-2">
+                <a href="mainDashBoard.html" class="btn btn-logout d-flex align-items-center">
+                    <span class="me-2">Trang chủ</span>
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="toast-container">
+        <div id="liveToast" class="toast toast-glass align-items-center hide" role="alert">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center w-100">
+                    <i id="toastIcon" class="bi bi-check-circle-fill text-success me-3 fs-4"></i>
+                    <div>
+                        <strong id="toastTitle" class="d-block mb-1">Thông báo</strong>
+                        <span id="toastMessage" class="small text-white-50">Nội dung</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 6rem;">
+        <div class="card-glass">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-white mb-0">Đội ngũ Giáo viên</h2>
+                <button class="btn btn-gradient" onclick="openTeacherModal()">
+                    <i class="bi bi-person-plus-fill me-2"></i>Thêm Giáo Viên
+                </button>
+            </div>
+
+            <div class="row g-4" id="teacherGrid"></div>
+            
+            <div class="d-flex justify-content-end mt-4" id="paginationContainer"></div>
+        </div>
+    </div>
+
+    <div class="modal fade modal-glass" id="teacherFormModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title fw-bold text-white" id="modalTitle">Thêm Giáo Viên</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="teacherForm">
+                        <input type="hidden" id="editMode" value="false">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50">Mã Giáo Viên <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="inputID" placeholder="VD: GV001">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50">Họ và Tên <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="inputName" placeholder="VD: Lê Minh Tâm">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50">Chuyên môn</label>
+                                    <input type="text" class="form-control" id="inputMajor" placeholder="VD: Python, Web...">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50">Ngày sinh</label>
+                                    <input type="date" class="form-control" id="inputDob">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="inputPhone" placeholder="090...">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50">Email</label>
+                                    <input type="email" class="form-control" id="inputEmail" placeholder="gv@example.com">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50">Số CCCD</label>
+                                    <input type="text" class="form-control" id="inputCCCD" placeholder="12 số...">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-white-50">Quê quán</label>
+                                    <input type="text" class="form-control" id="inputHometown" placeholder="Tỉnh/Thành phố">
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mt-3 border-top border-secondary pt-3">
+                                <label class="form-label text-white-50">Ảnh đại diện</label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div style="width: 80px; height: 80px;">
+                                        <img id="previewAvatar" src="https://via.placeholder.com/80?text=Avatar" 
+                                             class="rounded-circle border border-secondary" 
+                                             style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <input type="file" class="form-control" id="inputFileAvatar" accept="image/*" onchange="handleFileSelect(event)">
+                                        <input type="hidden" id="hiddenAvatarBase64">
+                                        <div class="form-text text-white-50 small">Định dạng: JPG, PNG (Max 500KB)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-glass-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-gradient" onclick="preSaveTeacher()">Tiếp tục & Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade modal-glass" id="confirmSaveTeacherModal" tabindex="-1" style="z-index: 1060;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title fw-bold text-white">Xác nhận thông tin Giáo viên</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-white-50 mb-3">Vui lòng kiểm tra kỹ thông tin trước khi lưu:</p>
+                    <ul class="list-group list-group-flush rounded border border-secondary" id="confirmTeacherList">
+                        </ul>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-glass-secondary" data-bs-dismiss="modal">Quay lại sửa</button>
+                    <button type="button" class="btn btn-success fw-bold" onclick="executeSaveTeacher()">Xác nhận Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade modal-glass" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content text-center p-3">
+                <div class="modal-body">
+                    <div class="text-danger mb-3 display-4"><i class="bi bi-trash"></i></div>
+                    <h5 class="text-white fw-bold">Xóa Giáo Viên?</h5>
+                    <p class="text-white-50 small">Lưu ý: Nếu xóa, các lớp do giáo viên này phụ trách sẽ chuyển về trạng thái "Chưa phân công".</p>
+                    <div class="d-flex justify-content-center gap-2 mt-4">
+                        <button class="btn btn-glass-secondary w-50" data-bs-dismiss="modal">Hủy</button>
+                        <button class="btn btn-danger w-50" onclick="confirmDelete()">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/QuanLyGiaoVien.js"></script>
+</body>
 </html>
