@@ -1,9 +1,8 @@
 const DB_KEY = 'LETSCODE_DB';
 let db = null;
 let deleteTargetId = null;
-let tempTeacherData = null; // Biến tạm lưu giáo viên
+let tempTeacherData = null;
 
-// CẤU HÌNH PHÂN TRANG
 const ITEMS_PER_PAGE = 6;
 let currentPage = 1;
 
@@ -118,18 +117,12 @@ window.changePage = function(page) {
 function openTeacherModal() {
     document.getElementById('modalTitle').innerText = "Thêm Giáo Viên";
     document.getElementById('editMode').value = "false";
-    document.getElementById('inputID').value = "";
-    document.getElementById('inputID').disabled = false;
-    document.getElementById('inputName').value = "";
-    document.getElementById('inputMajor').value = "";
-    document.getElementById('inputDob').value = "";
-    document.getElementById('inputPhone').value = "";
-    document.getElementById('inputEmail').value = "";
-    document.getElementById('inputCCCD').value = "";
-    document.getElementById('inputHometown').value = "";
-    document.getElementById('inputFileAvatar').value = "";
-    document.getElementById('hiddenAvatarBase64').value = "";
-    document.getElementById('previewAvatar').src = "https://via.placeholder.com/80?text=Avatar";
+    document.getElementById('inputID').value = ""; document.getElementById('inputID').disabled = false;
+    document.getElementById('inputName').value = ""; document.getElementById('inputMajor').value = "";
+    document.getElementById('inputDob').value = ""; document.getElementById('inputPhone').value = "";
+    document.getElementById('inputEmail').value = ""; document.getElementById('inputCCCD').value = "";
+    document.getElementById('inputHometown').value = ""; document.getElementById('inputFileAvatar').value = "";
+    document.getElementById('hiddenAvatarBase64').value = ""; document.getElementById('previewAvatar').src = "https://via.placeholder.com/80?text=Avatar";
     new bootstrap.Modal(document.getElementById('teacherFormModal')).show();
 }
 
@@ -138,20 +131,16 @@ function editTeacher(id) {
     if (!t) return;
     document.getElementById('modalTitle').innerText = "Cập nhật thông tin";
     document.getElementById('editMode').value = "true";
-    document.getElementById('inputID').value = t.id;
-    document.getElementById('inputID').disabled = true;
-    document.getElementById('inputName').value = t.name || "";
-    document.getElementById('inputMajor').value = t.major || "";
+    document.getElementById('inputID').value = t.id; document.getElementById('inputID').disabled = true;
+    document.getElementById('inputName').value = t.name || ""; document.getElementById('inputMajor').value = t.major || "";
     if (t.dob && t.dob.includes('/')) { 
          const parts = t.dob.split('/');
          document.getElementById('inputDob').value = `${parts[2]}-${parts[1]}-${parts[0]}`;
     } else {
          document.getElementById('inputDob').value = t.dob || "";
     }
-    document.getElementById('inputPhone').value = t.phone || "";
-    document.getElementById('inputEmail').value = t.email || "";
-    document.getElementById('inputCCCD').value = t.cccd || "";
-    document.getElementById('inputHometown').value = t.hometown || "";
+    document.getElementById('inputPhone').value = t.phone || ""; document.getElementById('inputEmail').value = t.email || "";
+    document.getElementById('inputCCCD').value = t.cccd || ""; document.getElementById('inputHometown').value = t.hometown || "";
     document.getElementById('inputFileAvatar').value = ""; 
     if (t.avatar) {
         document.getElementById('previewAvatar').src = t.avatar;
@@ -187,7 +176,6 @@ function preSaveTeacher() {
         avatar: document.getElementById('hiddenAvatarBase64').value 
     };
 
-    // Điền bảng xác nhận
     const ul = document.getElementById('confirmTeacherList');
     ul.innerHTML = `
         <li class="list-group-item bg-transparent text-white border-secondary"><strong>Mã GV:</strong> ${tempTeacherData.id}</li>
@@ -237,9 +225,7 @@ function confirmDelete() {
     const idx = db.teachers.findIndex(t => t.id === deleteTargetId);
     if (idx > -1) {
         db.teachers.splice(idx, 1);
-        db.classes.forEach(cls => {
-            if(cls.teacherId === deleteTargetId) cls.teacherId = null; 
-        });
+        db.classes.forEach(cls => { if(cls.teacherId === deleteTargetId) cls.teacherId = null; });
         saveDB();
         showToast("Đã xóa", "Đã xóa giáo viên và cập nhật lại các lớp.");
     }

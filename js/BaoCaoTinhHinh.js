@@ -2,7 +2,6 @@
 const DB_KEY = 'LETSCODE_DB';
 let db = null;
 
-// Biến cục bộ UI
 let currentHonoredList = [];
 let currentContactList = [];
 
@@ -25,7 +24,7 @@ function saveDB() {
     localStorage.setItem(DB_KEY, JSON.stringify(db));
 }
 
-// [QUAN TRỌNG] Chỉ hiện những lớp đã KHÓA (isLocked = true)
+// Lọc chỉ hiện lớp đang hoạt động (active)
 function renderClassDropdown() {
     const select = document.getElementById('classSelect');
     if(!db || !db.classes) return;
@@ -34,15 +33,15 @@ function renderClassDropdown() {
         select.remove(1);
     }
 
-    const lockedClasses = db.classes.filter(c => c.isLocked === true);
+    const activeClasses = db.classes.filter(c => c.status === 'active');
 
-    if (lockedClasses.length === 0) {
+    if (activeClasses.length === 0) {
         const option = document.createElement('option');
-        option.innerText = "(Chưa có lớp nào được khóa)";
+        option.innerText = "(Chưa có lớp nào đang hoạt động)";
         option.disabled = true;
         select.appendChild(option);
     } else {
-        lockedClasses.forEach(cls => {
+        activeClasses.forEach(cls => {
             const option = document.createElement('option');
             option.value = cls.id;
             option.innerText = `${cls.name} (${cls.id})`;
@@ -51,12 +50,11 @@ function renderClassDropdown() {
     }
 }
 
-// Sinh điểm ngẫu nhiên
+// ... (Giữ nguyên các hàm sinh báo cáo như file cũ) ...
 function getRandomScore() {
     return (Math.random() * (10 - 5) + 5).toFixed(1);
 }
 
-// TẠO BÁO CÁO
 function generateReport() {
     const classId = document.getElementById('classSelect').value;
     const monthId = document.getElementById('monthSelect').value;
@@ -73,7 +71,6 @@ function generateReport() {
     let dataChanged = false;
 
     const computedStudents = students.map(s => {
-        // Nếu chưa có điểm, sinh mới và lưu vào DB
         if (!db.scores[s.id]) {
             const oldS = parseFloat(getRandomScore());
             let newS = oldS + (Math.random() * 2 - 1);
@@ -105,7 +102,6 @@ function generateReport() {
     const progressList = computedStudents.filter(s => parseFloat(s.diff) > 0).sort((a, b) => b.diff - a.diff);
     const warningList = computedStudents.filter(s => parseFloat(s.diff) <= 0).sort((a, b) => a.diff - b.diff);
 
-    // Tìm ứng cử viên
     if (progressList.length > 0) {
         const topStudent = progressList[0];
         document.getElementById('topCandidateSection').style.display = 'block';
@@ -116,7 +112,6 @@ function generateReport() {
         document.getElementById('topCandidateSection').style.display = 'none';
     }
 
-    // Render UI
     document.getElementById('totalCount').innerText = students.length;
     updateHonoredCountUI();
     updateContactCountUI();
@@ -128,7 +123,6 @@ function generateReport() {
     showToast("Hoàn tất", `Đã tải báo cáo lớp ${classId}`);
 }
 
-// UI HELPER FUNCTIONS
 function getTrendHTML(diff) {
     if (diff > 0) return `<span class="fw-bold text-success"><i class="fas fa-arrow-up me-1"></i>+${diff}</span>`;
     if (diff < 0) return `<span class="fw-bold text-danger"><i class="fas fa-arrow-down me-1"></i>${diff}</span>`;
