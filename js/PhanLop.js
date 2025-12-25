@@ -10,15 +10,19 @@ function getRandomItem(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// Hàm sinh tên tiếng Việt thật
 function generateName(gender) {
     const ho = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Huỳnh', 'Hoàng', 'Phan', 'Vũ', 'Võ', 'Đặng', 'Bùi', 'Đỗ', 'Hồ', 'Ngô', 'Dương', 'Lý'];
-    const lotNam = ['Văn', 'Hữu', 'Đức', 'Thanh', 'Minh', 'Gia', 'Quốc', 'Tuấn', 'Hoàng', 'Công', 'Đình', 'Xuân', 'Chí', 'Quang'];
-    const lotNu = ['Thị', 'Ngọc', 'Thanh', 'Thùy', 'Phương', 'Khánh', 'Minh', 'Mai', 'Hồng', 'Kim', 'Bảo', 'Anh', 'Mỹ', 'Tường'];
-    const tenNam = ['Hùng', 'Dũng', 'Cường', 'Vinh', 'Huy', 'Khang', 'Bảo', 'Minh', 'Tùng', 'Phúc', 'Lâm', 'Khoa', 'Kiên', 'Thành', 'Đạt', 'Nam', 'Trung', 'Hiếu', 'Nghĩa', 'Trí'];
-    const tenNu = ['Lan', 'Huệ', 'Cúc', 'Mai', 'Hoa', 'Hương', 'Thảo', 'Trang', 'Huyền', 'Ly', 'Phương', 'Quỳnh', 'Anh', 'Diệp', 'Ngân', 'Nhi', 'Chi', 'Châu', 'Vy', 'Hân'];
+    
+    const lotNam = ['Văn', 'Hữu', 'Đức', 'Thanh', 'Minh', 'Gia', 'Quốc', 'Tuấn', 'Hoàng', 'Công', 'Đình', 'Xuân', 'Chí', 'Quang', 'Mạnh', 'Tiến'];
+    const tenNam = ['Hùng', 'Dũng', 'Cường', 'Vinh', 'Huy', 'Khang', 'Bảo', 'Minh', 'Tùng', 'Phúc', 'Lâm', 'Khoa', 'Kiên', 'Thành', 'Đạt', 'Nam', 'Trung', 'Hiếu', 'Nghĩa', 'Trí', 'Quân', 'Thắng'];
+    
+    const lotNu = ['Thị', 'Ngọc', 'Thanh', 'Thùy', 'Phương', 'Khánh', 'Minh', 'Mai', 'Hồng', 'Kim', 'Bảo', 'Anh', 'Mỹ', 'Tường', 'Diệu', 'Lan'];
+    const tenNu = ['Lan', 'Huệ', 'Cúc', 'Mai', 'Hoa', 'Hương', 'Thảo', 'Trang', 'Huyền', 'Ly', 'Phương', 'Quỳnh', 'Anh', 'Diệp', 'Ngân', 'Nhi', 'Chi', 'Châu', 'Vy', 'Hân', 'Thư', 'Uyên'];
 
     const hoTen = getRandomItem(ho);
     let lot, ten;
+    
     if (gender === 'Nam') {
         lot = getRandomItem(lotNam);
         ten = getRandomItem(tenNam);
@@ -29,6 +33,7 @@ function generateName(gender) {
     return `${hoTen} ${lot} ${ten}`;
 }
 
+// Hàm xóa dấu tiếng Việt để tạo email
 function removeVietnameseTones(str) {
     str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a"); 
     str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e"); 
@@ -47,39 +52,52 @@ function removeVietnameseTones(str) {
     return str;
 }
 
+// Hàm tạo giáo viên với tên thật ngẫu nhiên
 function generateTeacher(index) {
     const id = `GV${String(index).padStart(3, '0')}`;
     const gender = Math.random() > 0.5 ? 'Nam' : 'Nữ';
-    const name = generateName(gender);
+    
+    // Tự sinh tên thật thay vì dùng danh sách cố định
+    const name = generateName(gender); 
+    
     const majors = ["Scratch & STEM", "Robotics Lego", "Python & AI", "Web Frontend", "Web Backend", "Mobile App", "Graphic Design", "English for IT"];
-    const provinces = ["Hà Nội", "TP.HCM", "Đà Nẵng", "Nha Trang", "Cần Thơ", "Hải Phòng", "Vinh", "Huế"];
+    const provinces = ["Hà Nội", "TP.HCM", "Đà Nẵng", "Nha Trang", "Cần Thơ", "Hải Phòng", "Vinh", "Huế", "Thanh Hóa", "Quảng Ninh", "Bình Dương"];
+
+    // Tạo email từ tên thật: nguyenvana -> an.nguyen
+    const cleanName = removeVietnameseTones(name).toLowerCase().split(' ');
+    const emailPrefix = `${cleanName[cleanName.length-1]}.${cleanName[0]}`;
 
     return {
         id: id,
         name: name,
         major: getRandomItem(majors),
-        dob: `${getRandomInt(1985, 2000)}-${String(getRandomInt(1, 12)).padStart(2,'0')}-${String(getRandomInt(1, 28)).padStart(2,'0')}`,
-        phone: `09${getRandomInt(0, 9)}${getRandomInt(1000000, 9999999)}`,
-        email: `${removeVietnameseTones(name).toLowerCase().replace(/ /g, '.')}@letscode.edu.vn`,
-        cccd: `0${getRandomInt(10, 99)}0${getRandomInt(85, 99)}${getRandomInt(100000, 999999)}`,
+        dob: `${getRandomInt(1980, 1998)}-${String(getRandomInt(1, 12)).padStart(2,'0')}-${String(getRandomInt(1, 28)).padStart(2,'0')}`,
+        phone: `0${getRandomItem(['3','5','7','8','9'])}${getRandomInt(10000000, 99999999)}`,
+        email: `${emailPrefix}@letscode.edu.vn`,
+        cccd: `0${getRandomInt(10, 99)}0${getRandomInt(80, 98)}${getRandomInt(100000, 999999)}`,
         hometown: getRandomItem(provinces),
         avatar: ""
     };
 }
 
+// Hàm tạo học viên
 function generateStudent(id, status = "Đang học") {
-    const gender = Math.random() > 0.45 ? 'Nam' : 'Nữ';
+    const gender = Math.random() > 0.55 ? 'Nam' : 'Nữ'; // Tỉ lệ nam nhiều hơn xíu
     const name = generateName(gender);
     const year = getRandomInt(2008, 2016);
-    const wards = ["Vĩnh Hải", "Vĩnh Phước", "Lộc Thọ", "Phước Tân", "Phước Long", "Vĩnh Trường", "Diên Khánh", "Cam Lâm"];
+    const wards = ["Vĩnh Hải", "Vĩnh Phước", "Lộc Thọ", "Phước Tân", "Phước Long", "Vĩnh Trường", "Diên Khánh", "Cam Lâm", "Ninh Hòa"];
+
+    // Tạo email học viên
+    const cleanName = removeVietnameseTones(name).toLowerCase().split(' ');
+    const email = `${cleanName[cleanName.length-1]}.${cleanName[0]}${year}@gmail.com`;
 
     return {
         id: id,
         name: name,
         dob: `${year}-${String(getRandomInt(1, 12)).padStart(2,'0')}-${String(getRandomInt(1, 28)).padStart(2,'0')}`,
         gender: gender,
-        phone: `0${getRandomInt(3, 9)}${getRandomInt(10000000, 99999999)}`,
-        email: `${removeVietnameseTones(name).toLowerCase().split(' ').pop()}${year}@gmail.com`,
+        phone: `0${getRandomItem(['3','9'])}${getRandomInt(10000000, 99999999)}`, // SĐT phụ huynh
+        email: email,
         address: `${getRandomItem(wards)}, Khánh Hòa`,
         dateAdded: `2024-0${getRandomInt(1, 9)}-${getRandomInt(10, 28)}`,
         status: status,
@@ -89,17 +107,18 @@ function generateStudent(id, status = "Đang học") {
 
 // --- SINH DỮ LIỆU MẪU ---
 const teachers = [];
+// Tạo 30 giáo viên với tên thật
 for(let i=1; i<=30; i++) teachers.push(generateTeacher(i));
 
 const classes = [];
 const classTypes = [
-    { code: "SCR", name: "Scratch", max: 15 },
-    { code: "ROBO", name: "Robotics", max: 10 },
-    { code: "PY", name: "Python", max: 20 },
-    { code: "WEB", name: "Web Dev", max: 20 },
-    { code: "APP", name: "Mobile App", max: 15 },
-    { code: "DES", name: "Design", max: 15 },
-    { code: "ENG", name: "English IT", max: 25 }
+    { code: "SCR", name: "Lập trình Scratch", max: 15 },
+    { code: "ROBO", name: "Lắp ráp Robotics", max: 10 },
+    { code: "PY", name: "Python Cơ bản", max: 20 },
+    { code: "WEB", name: "Thiết kế Web", max: 20 },
+    { code: "APP", name: "Lập trình App", max: 15 },
+    { code: "DES", name: "Đồ họa Digital", max: 15 },
+    { code: "ENG", name: "Tiếng Anh CN", max: 25 }
 ];
 
 let studentIdCounter = 1000;
@@ -111,8 +130,11 @@ for(let i=0; i<30; i++) {
     let isLocked = false;
     let studentCount = getRandomInt(0, 5);
 
-    if (i < 10) { status = 'finished'; isLocked = false; studentCount = type.max; } // 10 lớp xong
-    else if (i < 22) { status = 'active'; isLocked = true; studentCount = getRandomInt(type.max - 5, type.max); } // 12 lớp đang học
+    if (i < 10) { 
+        status = 'finished'; isLocked = false; studentCount = type.max; // Lớp cũ đã xong thì đầy
+    } else if (i < 22) { 
+        status = 'active'; isLocked = true; studentCount = getRandomInt(type.max - 5, type.max); // Lớp đang học
+    }
 
     const clsStudents = [];
     for(let k=0; k<studentCount; k++) {
@@ -122,7 +144,7 @@ for(let i=0; i<30; i++) {
 
     classes.push({
         id: classId,
-        name: `${type.name} - K${Math.floor(i/classTypes.length)+1}`,
+        name: `${type.name} - Khóa ${Math.floor(i/classTypes.length)+1}`,
         teacherId: teachers[i % teachers.length].id,
         maxStudents: type.max,
         status: status,
@@ -134,13 +156,13 @@ for(let i=0; i<30; i++) {
 const unassignedStudents = [];
 for(let i=0; i<50; i++) {
     studentIdCounter++;
-    unassignedStudents.push(generateStudent(`NA${String(i+1).padStart(3,'0')}`, undefined));
+    unassignedStudents.push(generateStudent(`HS${studentIdCounter}`, undefined)); // Mã HS tiếp tục tăng
 }
 
-// Thêm HS1001 vào một lớp đã hoàn thành để test
+// Thêm một học viên cụ thể để test (Tên thật)
 if (classes.length > 0 && classes[0].status === 'finished') {
     classes[0].students[0].id = "HS1001";
-    classes[0].students[0].name = "Nguyễn Văn Test";
+    classes[0].students[0].name = "Nguyễn Minh Đức"; // Đã sửa tên test
 }
 
 const initialData = { teachers, classes, unassignedStudents, scores: {} };
@@ -176,24 +198,19 @@ function getTeacherName(id) {
 
 // --- LOGIC MỚI: LẤY DANH SÁCH HỌC VIÊN CÓ THỂ THÊM VÀO LỚP ---
 function getAvailableStudents() {
-    // 1. Lấy tất cả học viên trong danh sách chờ
     let available = [...db.unassignedStudents];
     const busyIds = new Set();
 
-    // 2. Tìm những học viên ĐANG BẬN (đang học lớp active hoặc recruiting)
     db.classes.forEach(c => {
         if (c.status !== 'finished') {
             c.students.forEach(s => busyIds.add(s.id));
         }
     });
 
-    // 3. Lấy học viên từ các lớp ĐÃ HOÀN THÀNH (nhưng không đang bận ở lớp khác)
     db.classes.forEach(c => {
         if (c.status === 'finished') {
             c.students.forEach(s => {
-                // Nếu học viên chưa có trong ds chờ VÀ không đang bận
                 if (!busyIds.has(s.id) && !available.some(a => a.id === s.id)) {
-                    // Copy thông tin để tránh tham chiếu
                     available.push({...s}); 
                 }
             });
@@ -368,7 +385,6 @@ function handleOpenAddStudent() {
     new bootstrap.Modal(document.getElementById('addStudentModal')).show();
 }
 
-// [CẬP NHẬT] Render danh sách học viên có thể thêm (bao gồm từ lớp cũ)
 function renderUnassignedStudentList() {
     const listContainer = document.getElementById('unassignedList');
     listContainer.innerHTML = '';
@@ -378,7 +394,6 @@ function renderUnassignedStudentList() {
     const idKw = document.getElementById('modalSearchID').value.trim().toLowerCase();
     const phoneKw = document.getElementById('modalSearchPhone').value.trim().toLowerCase();
 
-    // Lấy danh sách hợp lệ (Chờ + Xong - Đang học)
     const availableStudents = getAvailableStudents();
 
     const filteredList = availableStudents.filter(s => {
@@ -409,7 +424,6 @@ function renderUnassignedStudentList() {
     document.querySelectorAll('.student-checkbox').forEach(chk => { chk.addEventListener('change', () => { document.getElementById('selectedCount').innerText = document.querySelectorAll('.student-checkbox:checked').length; }); });
 }
 
-// [CẬP NHẬT] Xử lý khi xác nhận thêm
 function confirmAddStudents() {
     const checkboxes = document.querySelectorAll('.student-checkbox:checked');
     if (checkboxes.length === 0) return;
@@ -417,7 +431,6 @@ function confirmAddStudents() {
     const cls = db.classes.find(c => c.id === currentClassId);
     if (cls.students.length + selectedIds.length > cls.maxStudents) { showToast('Lỗi', 'Lớp không đủ chỗ.', 'error'); return; }
 
-    // Check trùng học viên ở lớp khác (trừ lớp đã finish) - bảo vệ 2 lớp
     let conflictStudents = [];
     selectedIds.forEach(sid => {
         const isBusy = db.classes.some(otherCls => otherCls.id !== cls.id && otherCls.status !== 'finished' && otherCls.students.some(s => s.id === sid));
@@ -425,20 +438,16 @@ function confirmAddStudents() {
     });
     if (conflictStudents.length > 0) { showToast('Lỗi', `Học viên ${conflictStudents.join(', ')} đang học lớp khác chưa kết thúc.`, 'error'); return; }
 
-    // Xử lý thêm
     selectedIds.forEach(id => {
-        // Tìm trong ds chờ
         const sIndex = db.unassignedStudents.findIndex(s => s.id === id);
         if (sIndex > -1) {
             const student = db.unassignedStudents[sIndex];
             cls.students.push({ ...student, status: 'Mới thêm' });
             db.unassignedStudents.splice(sIndex, 1);
         } else {
-            // Tìm trong lớp cũ (dùng getAvailableStudents để lấy data)
             const available = getAvailableStudents();
             const student = available.find(s => s.id === id);
             if(student) {
-                // Copy sang lớp mới, không xóa lịch sử cũ
                 cls.students.push({ ...student, status: 'Mới thêm' });
             }
         }
