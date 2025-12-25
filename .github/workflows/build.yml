@@ -3,7 +3,7 @@ name: Deploy Static Content to Pages
 on:
   # Chạy khi có code push lên nhánh main
   push:
-    branches: ["phanlop"]
+    branches: ["main"]
 
   # Cho phép chạy thủ công từ tab Actions
   workflow_dispatch:
