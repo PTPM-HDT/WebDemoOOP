@@ -1,3 +1,100 @@
+/* Dashboard grid layout for mainDashBoard.html */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+  justify-items: stretch;
+  align-items: stretch;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashboard-card {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+
+/* Stat Cards - Thẻ thống kê nhanh */
+.stat-card {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  height: 100%;
+}
+
+.stat-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.15rem;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bg-primary-subtle {
+  background: rgba(13, 110, 253, 0.15);
+}
+
+.bg-success-subtle {
+  background: rgba(25, 135, 84, 0.15);
+}
+
+.bg-warning-subtle {
+  background: rgba(255, 193, 7, 0.15);
+}
+
+.bg-info-subtle {
+  background: rgba(13, 202, 240, 0.15);
+}
 
 :root {
   --bg-dark: #030712;
@@ -18,15 +115,18 @@ body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   color: var(--text-primary);
   min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   position: relative;
   overflow-x: hidden;
-  padding-top: 80px;
+  padding-top: 60px;
 }
 
 body::before,
 body::after {
   content: '';
-  position: absolute;
+  position: fixed;
   width: 600px;
   height: 600px;
   border-radius: 50%;
@@ -125,8 +225,8 @@ body::after {
 .card-glass {
   background: var(--glass-bg);
   border: var(--glass-border);
-  border-radius: 24px;
-  padding: 2rem;
+  border-radius: 20px;
+  padding: 1.25rem;
   height: 100%;
   position: relative;
   overflow: hidden;
@@ -158,16 +258,16 @@ body::after {
 }
 
 .card-icon-wrapper {
-  width: 60px;
-  height: 60px;
-  border-radius: 16px;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
   color: white;
   transition: all 0.4s ease;
 }
@@ -182,14 +282,14 @@ body::after {
 .card-title {
   color: var(--text-primary);
   font-weight: 600;
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
 }
 
 .card-desc {
   color: var(--text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 0.85rem;
+  line-height: 1.5;
   margin-bottom: 0;
 }
 
@@ -222,7 +322,7 @@ body::after {
 footer {
   margin-top: auto;
   border-top: var(--glass-border);
-  padding: 2rem 0;
+  padding: 1rem 0;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
