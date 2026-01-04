@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="../css/PhanLop.css">
     
     <style>
-        /* --- CSS TÙY CHỈNH THANH CUỘN (SCROLLBAR) CHO GIAO DIỆN KÍNH --- */
-        
-        /* Cho Webkit (Chrome, Edge, Safari) */
         .custom-scroll::-webkit-scrollbar {
             width: 6px;
         }
@@ -32,12 +29,10 @@
             background: rgba(255, 255, 255, 0.4);
         }
 
-        /* Cố định chiều cao cho danh sách lớp để tạo scroll riêng */
         #classList {
-            /* Chiều cao bằng 100% màn hình trừ đi phần header và khoảng cách trên dưới */
             max-height: calc(100vh - 240px); 
-            overflow-y: auto; /* Cho phép cuộn dọc */
-            padding-right: 5px; /* Khoảng cách để nội dung không dính vào thanh cuộn */
+            overflow-y: auto; 
+            padding-right: 5px; 
         }
     </style>
 </head>

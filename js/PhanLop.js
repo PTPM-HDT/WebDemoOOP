@@ -1,7 +1,6 @@
-// --- QUẢN LÝ DỮ LIỆU CHUNG (SHARED DATA MANAGER) ---
+
 const DB_KEY = 'LETSCODE_DB';
 
-// --- HÀM HELPER TẠO DỮ LIỆU NGẪU NHIÊN ---
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
